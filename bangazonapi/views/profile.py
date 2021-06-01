@@ -81,8 +81,11 @@ class Profile(ViewSet):
             }
         """
         try:
-            current_user = Customer.objects.get(user=4)
-            current_user.recommends = Recommendation.objects.filter(recommender=current_user)
+            current_user = Customer.objects.get(user=request.auth.user)
+            current_user.recommends = Recommendation.objects.filter(
+                recommender=current_user)
+            current_user.recommended = Recommendation.objects.filter(
+                customer=current_user)
 
             serializer = ProfileSerializer(
                 current_user, many=False, context={'request': request})
@@ -371,11 +374,12 @@ class ProfileSerializer(serializers.ModelSerializer):
     """
     user = UserSerializer(many=False)
     recommends = RecommenderSerializer(many=True)
+    recommended = RecommenderSerializer(many=True)
 
     class Meta:
         model = Customer
         fields = ('id', 'url', 'user', 'phone_number',
-                  'address', 'payment_types', 'recommends',)
+                  'address', 'payment_types', 'recommends', 'recommended')
         depth = 1
 
 
