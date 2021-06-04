@@ -114,3 +114,8 @@ class ProductTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     # TODO: Product can be rated. Assert average rating exists.
+    def test_rate_product(self):
+        """
+        Ensure a rating can be added to a product and that the average rating exists.
+        """
+        self.test_create_product()
