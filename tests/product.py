@@ -101,23 +101,16 @@ class ProductTests(APITestCase):
         """
         Ensure we can delete a product
         """
-        product = Product()
-        product.name = "Van"
-        product.customer_id = 1
-        product.price = 100.56
-        product.description = "dirty but runs"
-        product.quantity = 1
-        product.created_date = "2009-06-12"
-        product.category_id = 1
-        product.location = "Ottowa"
-        product.image_path = None
-        product.save()
+        self.test_create_product()
+
+        url = "/products/1"
+        data = {"product_id": 1}
 
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token)
-        response = self.client.delete(f"/products/{product.id}")
+        response = self.client.delete(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
-        response = self.client.get(f"/products/{product.id}")
+        response = self.client.get(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     # TODO: Product can be rated. Assert average rating exists.

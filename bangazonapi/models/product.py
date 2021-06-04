@@ -57,6 +57,7 @@ class Product(SafeDeleteModel):
         Returns:
             number -- The average rating for the product
         """
+
         ratings = ProductRating.objects.filter(product=self)
         total_rating = 0
         for rating in ratings:
